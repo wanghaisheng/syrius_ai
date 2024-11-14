@@ -5,7 +5,7 @@ import { IEmbeddingRepositoryLogger } from './embedding-repository-logger.requir
 @Injectable()
 export class EmbeddingRepositoryLogger implements IEmbeddingRepositoryLogger {
   public logStoringDocuments(documents: Document[]): void {
-    Logger.log(`Storing ${documents.length} documents in memory.`);
+    Logger.log(`Storing ${documents.length} documents`);
     if (documents.length > 0) {
       const storedContents = documents
         .map((doc) => doc.pageContent)
