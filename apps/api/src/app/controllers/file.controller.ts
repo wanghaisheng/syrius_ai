@@ -20,7 +20,7 @@ import { LLMService } from '../services/llm/llm.service';
 export class FileController {
   constructor(
     @Inject('EmbeddingRepository')
-    private readonly vectorDBEmbeddingRepository: IEmbeddingRepository,
+    private readonly EmbeddingRepository: IEmbeddingRepository,
     @Inject('IChunkManagerService')
     private readonly chunkManagerService: IChunkManagerService,
     @Inject('IFileExtractorService')
@@ -57,7 +57,7 @@ export class FileController {
       const chunks = await this.chunkManagerService.chunkDocument(
         content || ''
       );
-      await this.vectorDBEmbeddingRepository.saveChunks(chunks);
+      await this.EmbeddingRepository.saveChunks(chunks);
 
       return `File uploaded successfully: ${fileUrl}`;
     } catch (error) {
@@ -70,7 +70,7 @@ export class FileController {
   public async ask(@Body() body: AskBody): Promise<AskResponse> {
     try {
       const { context, contextIsRelevant } =
-        await this.vectorDBEmbeddingRepository.getRelevantContext(
+        await this.EmbeddingRepository.getRelevantContext(
           body.question
         );
 
