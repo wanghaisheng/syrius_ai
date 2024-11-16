@@ -1,6 +1,6 @@
 import { Document } from '@langchain/core/documents';
 
-export interface IEmbeddingRepositoryLogger {
+export interface IEmbeddingServiceLogger {
   logStoringDocuments(documents: Document<Record<string, unknown>>[]): void;
   logQueryingContext(question: string): void;
   logNoMatchesFound(question: string): void;

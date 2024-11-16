@@ -19,7 +19,7 @@ import { LLMService } from '../services/llm/llm.service';
 @Controller('rag')
 export class FileController {
   constructor(
-    @Inject('EmbeddingRepository')
+    @Inject('IEmbeddingRepository')
     private readonly EmbeddingRepository: IEmbeddingRepository,
     @Inject('IChunkManagerService')
     private readonly chunkManagerService: IChunkManagerService,
@@ -70,9 +70,7 @@ export class FileController {
   public async ask(@Body() body: AskBody): Promise<AskResponse> {
     try {
       const { context, contextIsRelevant } =
-        await this.EmbeddingRepository.getRelevantContext(
-          body.question
-        );
+        await this.EmbeddingRepository.getRelevantContext(body.question);
 
       if (!contextIsRelevant) {
         return {

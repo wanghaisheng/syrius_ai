@@ -1,5 +1,9 @@
+import { ThirdPartyAPIKeyService } from './third-party-api-key.config';
+
+const thirdPartyApiKeyService = new ThirdPartyAPIKeyService();
+
 export const openAIConfiguration = {
-  openAIApiKey: process.env.OPENAI_API_KEY || '',
+  openAIApiKey: thirdPartyApiKeyService.getOpenAIApiKey() || '',
   model: 'gpt-4o-mini',
   temperature: 0,
   maxTokens: 1250,
@@ -10,7 +14,7 @@ export const openAIConfiguration = {
 // ROP: This configuration is not fonctional for the moment.
 // It is necessary to generate a new API key to use the service.
 export const anthropicConfiguration = {
-  anthropicApiKey: process.env.ANTHROPIC_API_KEY || '',
+  anthropicApiKey: thirdPartyApiKeyService.getAnthropicApiKey() || '',
   model: 'claude-2',
   temperature: 0.7,
   maxTokens: 1250,
@@ -19,7 +23,7 @@ export const anthropicConfiguration = {
 };
 
 export const mistralConfiguration = {
-  mistralApiKey: process.env.MISTRAL_API_KEY || '',
+  mistralApiKey: thirdPartyApiKeyService.getMistralApiKey() || '',
   model: 'open-mistral-7b',
   temperature: 0.5,
   maxTokens: 1250,

@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ILLMService } from './llm.service.requirements';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 
+type LLMResponse = { text: string } | string | Array<{ text: string } | string>;
+
 @Injectable()
 export class LLMService implements ILLMService {
   constructor(private readonly llm: BaseChatModel) {}
@@ -25,16 +27,16 @@ export class LLMService implements ILLMService {
     return `Context:\n${formattedContext}\n\nQuestion: ${question}\nAnswer:`;
   }
 
-  private async invokeLLM(prompt: string): Promise<any> {
+  private async invokeLLM(prompt: string): Promise<LLMResponse> {
     try {
       const response = await this.llm.invoke(prompt);
       return response;
-    } catch (error: any) {
+    } catch (error) {
       throw new Error(`LLM invocation failed: ${error.message}`);
     }
   }
 
-  private extractResponseText(response: any): string {
+  private extractResponseText(response: LLMResponse): string {
     if (typeof response === 'string') {
       return response;
     } else if (Array.isArray(response)) {

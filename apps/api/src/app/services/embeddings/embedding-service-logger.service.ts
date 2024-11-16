@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Document } from '@langchain/core/documents';
-import { IEmbeddingRepositoryLogger } from './embedding-repository-logger.requirements';
+import { IEmbeddingServiceLogger } from './embedding-service-logger.requirements';
 
 @Injectable()
-export class EmbeddingRepositoryLogger implements IEmbeddingRepositoryLogger {
+export class EmbeddingServiceLogger implements IEmbeddingServiceLogger {
   public logStoringDocuments(documents: Document[]): void {
     Logger.log(`Storing ${documents.length} documents`);
     if (documents.length > 0) {
