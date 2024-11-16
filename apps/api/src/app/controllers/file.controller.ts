@@ -20,7 +20,7 @@ import { LLMService } from '../services/llm/llm.service';
 export class FileController {
   constructor(
     @Inject('IEmbeddingRepository')
-    private readonly EmbeddingRepository: IEmbeddingRepository,
+    private readonly embeddingRepository: IEmbeddingRepository,
     @Inject('IChunkManagerService')
     private readonly chunkManagerService: IChunkManagerService,
     @Inject('IFileExtractorService')
@@ -34,62 +34,40 @@ export class FileController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   public async uploadFile(@UploadedFile() file: File): Promise<string> {
-    try {
-      if (!file) {
-        throw new Error('No file uploaded');
-      }
+    if (!file) throw new Error('No file uploaded');
+    const fileExtension = file.originalname.split('.').pop()?.toLowerCase();
+    if (!fileExtension) throw new Error('Unable to determine file extension');
 
-      const fileExtension = file.originalname.split('.').pop()?.toLowerCase();
-      if (!fileExtension) {
-        throw new Error('Unable to determine file extension');
-      }
+    const fileUrl = await this.fileUploadService.uploadFile(
+      file.buffer,
+      file.originalname
+    );
+    const content = await this.fileExtractorService.extractContent(
+      file.buffer,
+      fileExtension
+    );
+    const chunks = await this.chunkManagerService.chunkDocument(content || '');
+    await this.embeddingRepository.saveChunks(chunks);
 
-      const fileUrl = await this.fileUploadService.uploadFile(
-        file.buffer,
-        file.originalname
-      );
-
-      const content = await this.fileExtractorService.extractContent(
-        file.buffer,
-        fileExtension
-      );
-
-      const chunks = await this.chunkManagerService.chunkDocument(
-        content || ''
-      );
-      await this.EmbeddingRepository.saveChunks(chunks);
-
-      return `File uploaded successfully: ${fileUrl}`;
-    } catch (error) {
-      console.error('File upload failed:', error);
-      throw error;
-    }
+    return `File uploaded successfully: ${fileUrl}`;
   }
 
   @Post('ask')
   public async ask(@Body() body: AskBody): Promise<AskResponse> {
-    try {
-      const { context, contextIsRelevant } =
-        await this.EmbeddingRepository.getRelevantContext(body.question);
+    const { context, contextIsRelevant } =
+      await this.embeddingRepository.getRelevantContext(body.question);
+    if (!contextIsRelevant)
+      return {
+        answer: 'Unfortunately, no context-specific information was found.',
+      };
 
-      if (!contextIsRelevant) {
-        return {
-          answer: 'Unfortunately, no context-specific information was found.',
-        };
-      }
-
-      const chatModel = this.llmServiceFactory.create(body.model);
-      const llmService = new LLMService(chatModel);
-      const answer = await llmService.askQuestion(
-        body.question,
-        context,
-        contextIsRelevant
-      );
-
-      return { answer };
-    } catch (error) {
-      console.error('Error during ask operation:', error);
-      throw error;
-    }
+    const chatModel = this.llmServiceFactory.create(body.model);
+    const llmService = new LLMService(chatModel);
+    const answer = await llmService.askQuestion(
+      body.question,
+      context,
+      contextIsRelevant
+    );
+    return { answer };
   }
 }

@@ -29,9 +29,7 @@ export class EmbeddingServiceLogger implements IEmbeddingServiceLogger {
     Logger.debug(
       `Found ${
         relevantDocs.length
-      } relevant documents. First few docs: ${JSON.stringify(
-        relevantDocs
-      )}`
+      } relevant documents. First few docs: ${JSON.stringify(relevantDocs)}`
     );
   }
 
