@@ -1,14 +1,20 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { IEmbeddingServiceLogger } from '../../services/embeddings/embedding-service-logger.requirements';
-import { IEmbeddingService } from '../../services/embeddings/embeddings.service.requirements';
-import { IPineConeService } from '../../services/pinecone/pinecone.service.requirements';
 import { PineconeRecord } from '@pinecone-database/pinecone';
+import {
+  IDocumentProcessingService,
+  RelevantDocument,
+} from '../../services/document/document-processing.service.requirements';
+import { IEmbeddingService } from '../../services/embeddings/embeddings.service.requirements';
+import { IEmbeddingServiceLogger } from '../../services/embeddings/embedding-service-logger.requirements';
+import { IPineConeService } from '../../services/pinecone/pinecone.service.requirements';
 
 @Injectable()
 export class EmbeddingRepository {
   private static readonly SIMILARITY_THRESHOLD = 0.6;
 
   constructor(
+    @Inject('IDocumentProcessingService')
+    private readonly documentProcessingService: IDocumentProcessingService,
     @Inject('IEmbeddingService')
     private readonly embeddingService: IEmbeddingService,
     @Inject('IEmbeddingServiceLogger')
@@ -49,45 +55,28 @@ export class EmbeddingRepository {
 
     if (response.matches.length === 0) {
       this.logger.logNoMatchesFound(question);
+      return { context: [], contextIsRelevant: false };
     }
 
-    const relevantDocs = response.matches.map((match) => ({
+    const relevantDocs: RelevantDocument[] = response.matches.map((match) => ({
       text: match.metadata?.text as string,
       score: match.score,
     }));
 
-    relevantDocs.forEach((doc, index) => {
-      this.logger.logRelevantDoc(index, doc.score, doc.text);
-    });
+    this.logger.logRelevantDocuments(relevantDocs);
 
-    const averageScore = this.calculateAverageScore(relevantDocs);
+    const averageScore =
+      this.documentProcessingService.calculateAverageScore(relevantDocs);
     this.logger.logSimilarityScore(averageScore);
 
     const contextIsRelevant =
       averageScore >= EmbeddingRepository.SIMILARITY_THRESHOLD;
     this.logger.logContextRelevance(contextIsRelevant, averageScore, question);
+
     const combinedContext = contextIsRelevant
-      ? this.combineContext(relevantDocs)
+      ? this.documentProcessingService.combineContext(relevantDocs)
       : [];
 
     return { context: combinedContext, contextIsRelevant };
-  }
-
-  private calculateAverageScore(
-    relevantDocs: Array<{ score: number }>
-  ): number {
-    const totalScore = relevantDocs.reduce((sum, doc) => sum + doc.score, 0);
-    return totalScore / relevantDocs.length;
-  }
-
-  private combineContext(
-    relevantDocs: Array<{ text: string; score: number }>
-  ): string[] {
-    const uniqueDocs = Array.from(
-      new Set(
-        relevantDocs.filter((doc) => doc.score >= 0.86).map((doc) => doc.text)
-      )
-    );
-    return uniqueDocs.join('\n\n').split('\n\n');
   }
 }

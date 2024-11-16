@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Document } from '@langchain/core/documents';
 import { IEmbeddingServiceLogger } from './embedding-service-logger.requirements';
+import { RelevantDocument } from '../document/document-processing.service.requirements';
 
 @Injectable()
 export class EmbeddingServiceLogger implements IEmbeddingServiceLogger {
@@ -24,8 +25,12 @@ export class EmbeddingServiceLogger implements IEmbeddingServiceLogger {
     Logger.warn(`No matches found for question: "${question}"`);
   }
 
-  public logRelevantDoc(index: number, score: number, text: string): void {
-    Logger.debug(`Relevant Doc ${index}: Score: ${score}, Text: ${text}`);
+  public logRelevantDocuments(relevantDocs: RelevantDocument[]): void {
+    Logger.debug(
+      `Found ${relevantDocs.length} relevant documents: ${JSON.stringify(
+        relevantDocs
+      )}`
+    );
   }
 
   public logAverageScore(averageScore: number): void {
