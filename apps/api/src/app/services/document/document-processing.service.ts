@@ -23,6 +23,11 @@ export class DocumentProcessingService implements IDocumentProcessingService {
     return this.formatDocumentsAsContext(uniqueDocs);
   }
 
+  public checkDocumentConsistency(docs: RelevantDocument[]): boolean {
+    const uniqueTexts = new Set(docs.map((doc) => doc.text));
+    return uniqueTexts.size <= docs.length * 0.8;
+  }
+
   private filterHighRelevanceDocuments(
     docs: RelevantDocument[]
   ): RelevantDocument[] {

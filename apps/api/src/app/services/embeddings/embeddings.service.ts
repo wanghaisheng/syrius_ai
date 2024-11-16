@@ -18,7 +18,6 @@ export class EmbeddingService implements IEmbeddingService {
       openAIApiKey: this.thirdPartyApiKeyService.getOpenAIApiKey(),
     });
     const embeddings = await embeddingModel.embedDocuments(chunks);
-    this.logger.logGeneratedEmbeddings(embeddings);
     return embeddings;
   }
 
@@ -27,7 +26,6 @@ export class EmbeddingService implements IEmbeddingService {
       openAIApiKey: this.thirdPartyApiKeyService.getOpenAIApiKey(),
     });
     const embedding = await embeddingModel.embedQuery(question);
-    this.logger.logGeneratedEmbeddings(embedding);
     return embedding;
   }
 }

@@ -10,7 +10,7 @@ import { IPineConeService } from '../../services/pinecone/pinecone.service.requi
 
 @Injectable()
 export class EmbeddingRepository {
-  private static readonly SIMILARITY_THRESHOLD = 0.6;
+  private static readonly SIMILARITY_THRESHOLD = 0.45;
 
   constructor(
     @Inject('IDocumentProcessingService')
@@ -58,19 +58,21 @@ export class EmbeddingRepository {
       return { context: [], contextIsRelevant: false };
     }
 
-    const relevantDocs: RelevantDocument[] = response.matches.map((match) => ({
-      text: match.metadata?.text as string,
-      score: match.score,
-    }));
+    const relevantDocs: RelevantDocument[] = response.matches
+      .filter((match) => match.score >= 0.5)
+      .map((match) => ({
+        text: match.metadata?.text as string,
+        score: match.score,
+      }));
 
     this.logger.logRelevantDocuments(relevantDocs);
 
     const averageScore =
       this.documentProcessingService.calculateAverageScore(relevantDocs);
-    this.logger.logSimilarityScore(averageScore);
+    this.logger.logAverageScore(averageScore);
 
-    const contextIsRelevant =
-      averageScore >= EmbeddingRepository.SIMILARITY_THRESHOLD;
+    const contextIsRelevant = averageScore >= 0.8 && relevantDocs.length > 0;
+
     this.logger.logContextRelevance(contextIsRelevant, averageScore, question);
 
     const combinedContext = contextIsRelevant

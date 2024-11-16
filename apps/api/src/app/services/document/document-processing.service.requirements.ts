@@ -6,4 +6,5 @@ export interface RelevantDocument {
 export interface IDocumentProcessingService {
   calculateAverageScore(docs: RelevantDocument[]): number;
   combineContext(docs: RelevantDocument[]): string[];
+  checkDocumentConsistency(docs: RelevantDocument[]): boolean;
 }
