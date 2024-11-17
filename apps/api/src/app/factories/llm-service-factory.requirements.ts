@@ -1,5 +1,5 @@
-import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { ILLMService } from '../services/llm/llm.service.requirements';
 
 export interface ILLMServiceFactory {
-  create(model: 'openai' | 'anthropic' | 'mistral'): BaseChatModel;
+  create(model: 'openai' | 'anthropic' | 'mistral'): ILLMService;
 }

@@ -14,10 +14,6 @@ export class AskBody {
   @IsNotEmpty()
   @IsString()
   public question: string;
-
-  @IsNotEmpty()
-  @IsString()
-  public fileName: string;
 }
 
 export class AskResponse {
