@@ -11,8 +11,6 @@ export const openAIConfiguration = {
   maxRetries: 2,
 };
 
-// ROP: This configuration is not fonctional for the moment.
-// It is necessary to generate a new API key to use the service.
 export const anthropicConfiguration = {
   anthropicApiKey: thirdPartyApiKeyService.getAnthropicApiKey() || '',
   model: 'claude-2',

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ChunkManagerService } from '../services/chunks/chunk-manager.service';
 import { DocumentProcessingService } from '../services/document/document-processing.service';
 import { EmbeddingRepository } from '../repositories/embedding/embedding-repository.service';
-import { EmbeddingService } from '../services/embeddings/embeddings.service';
+import { OpenAIEmbeddingService } from '../services/embeddings/embeddings.service';
 import { EmbeddingServiceLogger } from '../services/embeddings/embedding-service-logger.service';
 import { FileController } from '../controllers/file.controller';
 import { FileExtractorService } from '../services/file-extractor/file-extractor.service';
@@ -20,7 +20,7 @@ import { ThirdPartyAPIKeyService } from '../config/third-party-api-key.config';
       useClass: DocumentProcessingService,
     },
     { provide: 'IEmbeddingRepository', useClass: EmbeddingRepository },
-    { provide: 'IEmbeddingService', useClass: EmbeddingService },
+    { provide: 'IEmbeddingService', useClass: OpenAIEmbeddingService },
     { provide: 'IEmbeddingServiceLogger', useClass: EmbeddingServiceLogger },
     { provide: 'IFileExtractorService', useClass: FileExtractorService },
     { provide: 'IFileUploadService', useClass: FileUploadService },

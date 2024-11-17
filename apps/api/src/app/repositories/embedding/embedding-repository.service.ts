@@ -3,9 +3,10 @@ import { PineconeRecord } from '@pinecone-database/pinecone';
 import { IEmbeddingService } from '../../services/embeddings/embeddings.service.requirements';
 import { IEmbeddingServiceLogger } from '../../services/embeddings/embedding-service-logger.requirements';
 import { IPineConeService } from '../../services/pinecone/pinecone.service.requirements';
+import { IEmbeddingRepository } from './embedding-repository.service.requirements';
 
 @Injectable()
-export class EmbeddingRepository {
+export class EmbeddingRepository implements IEmbeddingRepository {
   private static readonly MIN_SCORE_THRESHOLD = 0.5; // ROP: Threshold for document matching
   private static readonly CONTEXT_RELEVANT_THRESHOLD = 0.6; // ROP: Threshold for determining whether the context is relevant
 

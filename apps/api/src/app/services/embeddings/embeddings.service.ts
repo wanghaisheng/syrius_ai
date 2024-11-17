@@ -5,7 +5,7 @@ import { IThirdPartyAPIKeyService } from '../../config/third-party-api-key.confi
 import { IEmbeddingService } from './embeddings.service.requirements';
 
 @Injectable()
-export class EmbeddingService implements IEmbeddingService {
+export class OpenAIEmbeddingService implements IEmbeddingService {
   constructor(
     @Inject('IThirdPartyAPIKeyService')
     private readonly thirdPartyApiKeyService: IThirdPartyAPIKeyService,
