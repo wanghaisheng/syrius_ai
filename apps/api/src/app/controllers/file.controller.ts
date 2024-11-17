@@ -14,7 +14,6 @@ import { IEmbeddingRepository } from '../repositories/embedding/embedding-reposi
 import { IFileExtractorService } from '../services/file-extractor/file-extractor.service.requirements';
 import { IFileUploadService } from '../services/file-upload/file-upload.service.requirements';
 import { ILLMServiceFactory } from '../factories/llm-service-factory.requirements';
-import { LLMService } from '../services/llm/llm.service';
 
 @Controller('rag')
 export class FileController {
@@ -61,8 +60,7 @@ export class FileController {
         answer: 'Unfortunately, no context-specific information was found.',
       };
 
-    const chatModel = this.llmServiceFactory.create(body.model);
-    const llmService = new LLMService(chatModel);
+    const llmService = this.llmServiceFactory.create(body.model);
     const answer = await llmService.askQuestion(
       body.question,
       context,

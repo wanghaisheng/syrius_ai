@@ -5,8 +5,11 @@ import { BaseChatModel } from '@langchain/core/language_models/chat_models';
 type LLMResponse = { text: string } | string | Array<{ text: string } | string>;
 
 @Injectable()
-export class LLMService implements ILLMService {
-  constructor(private readonly llm: BaseChatModel) {}
+export class GeneralLLMService implements ILLMService {
+  constructor(
+    private readonly llm: BaseChatModel
+  ) // private readonly systemPromptGenerator: ISystemPromptGenerator // This is a future requirement
+  {}
 
   public async askQuestion(
     question: string,
