@@ -1,29 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Pinecone, Index } from '@pinecone-database/pinecone';
-import { OpenAIEmbeddings } from '@langchain/openai';
+import { PineconeRecord } from '@pinecone-database/pinecone';
+import { IEmbeddingService } from '../../services/embeddings/embeddings.service.requirements';
+import { IEmbeddingServiceLogger } from '../../services/embeddings/embedding-service-logger.requirements';
+import { IPineConeService } from '../../services/pinecone/pinecone.service.requirements';
 import { IEmbeddingRepository } from './embedding-repository.service.requirements';
-import { IEmbeddingRepositoryLogger } from './embedding-repository-logger.requirements';
 
 @Injectable()
 export class EmbeddingRepository implements IEmbeddingRepository {
-  private pineconeClient: Pinecone;
-  private index: Index;
-  private static readonly SIMILARITY_THRESHOLD = 0.6;
+  private static readonly MIN_SCORE_THRESHOLD = 0.5; // ROP: Threshold for document matching
+  private static readonly CONTEXT_RELEVANT_THRESHOLD = 0.6; // ROP: Threshold for determining whether the context is relevant
 
   constructor(
-    @Inject('EmbeddingRepositoryLogger')
-    private readonly logger: IEmbeddingRepositoryLogger
-  ) {
-    this.pineconeClient = new Pinecone({
-      apiKey: process.env.PINECONE_API_KEY,
-    });
-
-    this.index = this.pineconeClient.index('syrius-index');
-  }
+    @Inject('IEmbeddingService')
+    private readonly embeddingService: IEmbeddingService,
+    @Inject('IEmbeddingServiceLogger')
+    private readonly logger: IEmbeddingServiceLogger,
+    @Inject('IPineConeService')
+    private readonly pineconeService: IPineConeService
+  ) {}
 
   public async saveChunks(chunks: string[]): Promise<void> {
-    const embeddings = await this.embedChunks(chunks);
-    const records = embeddings.map((values, i) => ({
+    const embeddings = await this.embeddingService.embedChunks(chunks);
+    const records: PineconeRecord[] = embeddings.map((values, i) => ({
       id: `vec${i + 1}`,
       values,
       metadata: { text: chunks[i] },
@@ -31,20 +29,20 @@ export class EmbeddingRepository implements IEmbeddingRepository {
 
     this.logger.logStoringDocuments(
       records.map((record) => ({
-        pageContent: record.metadata.text,
+        pageContent: String(record.metadata.text),
         metadata: record.metadata,
       }))
     );
-    await this.index.namespace('syrius-index').upsert(records);
+
+    await this.pineconeService.upsertDocuments('syrius-index', records);
   }
 
   public async getRelevantContext(
     question: string
   ): Promise<{ context: string[]; contextIsRelevant: boolean }> {
-    const queryEmbedding = await this.embedQuery(question);
-
+    const queryEmbedding = await this.embeddingService.embedQuery(question);
     this.logger.logQueryingContext(question);
-    const response = await this.index.namespace('syrius-index').query({
+    const response = await this.pineconeService.queryDocuments('syrius-index', {
       topK: 15,
       vector: queryEmbedding,
       includeMetadata: true,
@@ -52,69 +50,31 @@ export class EmbeddingRepository implements IEmbeddingRepository {
 
     if (response.matches.length === 0) {
       this.logger.logNoMatchesFound(question);
+      return { context: [], contextIsRelevant: false };
     }
 
-    const relevantDocs = response.matches.map((match) => ({
-      text: match.metadata?.text as string,
-      score: match.score,
-    }));
+    const relevantDocs = response.matches
+      .filter((match) => match.score >= EmbeddingRepository.MIN_SCORE_THRESHOLD)
+      .map((match) => ({
+        text: match.metadata?.text as string,
+        score: match.score,
+      }));
 
-    relevantDocs.forEach((doc, index) => {
-      this.logger.logRelevantDoc(index, doc.score, doc.text);
-    });
+    this.logger.logRelevantDocuments(relevantDocs);
 
-    const averageScore = this.calculateAverageScore(relevantDocs);
+    const averageScore =
+      relevantDocs.reduce((acc, doc) => acc + doc.score, 0) /
+      relevantDocs.length;
     this.logger.logAverageScore(averageScore);
 
     const contextIsRelevant =
-      averageScore >= EmbeddingRepository.SIMILARITY_THRESHOLD;
+      averageScore >= EmbeddingRepository.CONTEXT_RELEVANT_THRESHOLD &&
+      relevantDocs.length > 0;
     this.logger.logContextRelevance(contextIsRelevant, averageScore, question);
+
     const combinedContext = contextIsRelevant
-      ? this.combineContext(relevantDocs)
+      ? relevantDocs.map((doc) => doc.text)
       : [];
-
     return { context: combinedContext, contextIsRelevant };
-  }
-
-  private async embedChunks(chunks: string[]): Promise<number[][]> {
-    const embeddingModel = new OpenAIEmbeddings({
-      openAIApiKey: process.env.OPENAI_API_KEY || '',
-    });
-    const embeddings = await embeddingModel.embedDocuments(chunks);
-
-    this.logger.logGeneratedEmbeddings(embeddings);
-
-    return embeddings;
-  }
-
-  private async embedQuery(question: string): Promise<number[]> {
-    const embeddingModel = new OpenAIEmbeddings({
-      openAIApiKey: process.env.OPENAI_API_KEY || '',
-    });
-    const embedding = await embeddingModel.embedQuery(question);
-
-    this.logger.logGeneratedEmbeddings(embedding);
-
-    return embedding;
-  }
-
-  private calculateAverageScore(
-    relevantDocs: Array<{ score: number }>
-  ): number {
-    const totalScore = relevantDocs.reduce((sum, doc) => sum + doc.score, 0);
-    const averageScore = totalScore / relevantDocs.length;
-    this.logger.logSimilarityScore(averageScore);
-    return averageScore;
-  }
-
-  private combineContext(
-    relevantDocs: Array<{ text: string; score: number }>
-  ): string[] {
-    const uniqueDocs = Array.from(
-      new Set(
-        relevantDocs.filter((doc) => doc.score >= 0.86).map((doc) => doc.text)
-      )
-    );
-    return uniqueDocs.join('\n\n').split('\n\n');
   }
 }
