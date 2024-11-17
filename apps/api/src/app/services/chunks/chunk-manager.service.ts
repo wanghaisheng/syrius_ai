@@ -3,8 +3,8 @@ import { IChunkManagerService } from './chunk-manager.service.requirements';
 import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 
 export class ChunkManagerService implements IChunkManagerService {
-  private static readonly CHUNK_SIZE = 450;
-  private static readonly CHUNK_OVERLAP = 150;
+  private static readonly CHUNK_SIZE = 375;
+  private static readonly CHUNK_OVERLAP = 125;
 
   public async chunkDocument(content: string): Promise<string[]> {
     const textSplitter = new RecursiveCharacterTextSplitter({
