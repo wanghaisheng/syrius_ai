@@ -25,7 +25,7 @@ import { ThirdPartyAPIKeyService } from '../config/third-party-api-key.config';
     { provide: 'IFileExtractorService', useClass: FileExtractorService },
     { provide: 'IFileUploadService', useClass: FileUploadService },
     { provide: 'ILLMServiceFactory', useClass: LLMServiceFactory },
-    { provide: 'IPineConeService', useClass: PineconeService },
+    { provide: 'IVectorStorageService', useClass: PineconeService },
     { provide: 'IThirdPartyAPIKeyService', useClass: ThirdPartyAPIKeyService },
   ],
 })

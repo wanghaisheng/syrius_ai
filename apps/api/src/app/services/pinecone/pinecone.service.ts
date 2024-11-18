@@ -1,19 +1,21 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import {
   Pinecone,
-  Index,
   PineconeRecord,
   QueryOptions,
   QueryResponse,
-  RecordMetadata,
 } from '@pinecone-database/pinecone';
 import { IThirdPartyAPIKeyService } from '../../config/third-party-api-key.config.requirements';
-import { IPineConeService } from './pinecone.service.requirements';
+import {
+  IVectorStorageService,
+  VectorRecord,
+  VectorQueryOptions,
+  VectorQueryResponse,
+} from './vector-storage.service.requirements';
 
 @Injectable()
-export class PineconeService implements IPineConeService {
+export class PineconeService implements IVectorStorageService {
   private pineconeClient: Pinecone;
-  private index: Index;
 
   constructor(
     @Inject('IThirdPartyAPIKeyService')
@@ -22,20 +24,39 @@ export class PineconeService implements IPineConeService {
     this.pineconeClient = new Pinecone({
       apiKey: this.thirdPartyApiKeyService.getPineconeApiKey(),
     });
-    this.index = this.pineconeClient.index('syrius-index');
   }
 
-  public async upsertDocuments(
-    namespace: string,
-    records: PineconeRecord[]
-  ): Promise<void> {
-    await this.index.namespace(namespace).upsert(records);
+  private getIndex(namespace: string) {
+    return this.pineconeClient.index(namespace);
   }
 
-  public async queryDocuments(
-    namespace: string,
-    query: QueryOptions
-  ): Promise<QueryResponse<RecordMetadata>> {
-    return await this.index.namespace(namespace).query(query);
+  public async upsert(records: VectorRecord[]): Promise<void> {
+    const pineconeRecords: PineconeRecord[] = records.map((record) => ({
+      id: record.id,
+      values: record.values,
+      metadata: record.metadata,
+    }));
+    await this.getIndex('syrius-index').upsert(pineconeRecords);
+  }
+
+  public async query(
+    options: VectorQueryOptions
+  ): Promise<VectorQueryResponse> {
+    const queryOptions: QueryOptions = {
+      vector: options.vector,
+      topK: options.topK,
+      includeMetadata: options.includeMetadata,
+    };
+
+    const response: QueryResponse = await this.getIndex('syrius-index').query(
+      queryOptions
+    );
+
+    return {
+      matches: response.matches.map((match) => ({
+        score: match.score,
+        metadata: match.metadata,
+      })),
+    };
   }
 }
