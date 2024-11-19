@@ -1,27 +1,26 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PineconeRecord } from '@pinecone-database/pinecone';
 import { IEmbeddingService } from '../../services/embeddings/embeddings.service.requirements';
 import { IEmbeddingServiceLogger } from '../../services/embeddings/embedding-service-logger.requirements';
-import { IPineConeService } from '../../services/pinecone/pinecone.service.requirements';
+import { IVectorStorageService } from '../../services/pinecone/vector-storage.service.requirements';
 import { IEmbeddingRepository } from './embedding-repository.service.requirements';
 
 @Injectable()
 export class EmbeddingRepository implements IEmbeddingRepository {
-  private static readonly MIN_SCORE_THRESHOLD = 0.5; // ROP: Threshold for document matching
-  private static readonly CONTEXT_RELEVANT_THRESHOLD = 0.6; // ROP: Threshold for determining whether the context is relevant
+  private static readonly MIN_SCORE_THRESHOLD = 0.5;
+  private static readonly CONTEXT_RELEVANT_THRESHOLD = 0.6;
 
   constructor(
     @Inject('IEmbeddingService')
     private readonly embeddingService: IEmbeddingService,
     @Inject('IEmbeddingServiceLogger')
     private readonly logger: IEmbeddingServiceLogger,
-    @Inject('IPineConeService')
-    private readonly pineconeService: IPineConeService
+    @Inject('IVectorStorageService')
+    private readonly vectorStorageService: IVectorStorageService
   ) {}
 
   public async saveChunks(chunks: string[]): Promise<void> {
     const embeddings = await this.embeddingService.embedChunks(chunks);
-    const records: PineconeRecord[] = embeddings.map((values, i) => ({
+    const records = embeddings.map((values, i) => ({
       id: `vec${i + 1}`,
       values,
       metadata: { text: chunks[i] },
@@ -34,7 +33,7 @@ export class EmbeddingRepository implements IEmbeddingRepository {
       }))
     );
 
-    await this.pineconeService.upsertDocuments('syrius-index', records);
+    await this.vectorStorageService.upsert(records);
   }
 
   public async getRelevantContext(
@@ -42,9 +41,9 @@ export class EmbeddingRepository implements IEmbeddingRepository {
   ): Promise<{ context: string[]; contextIsRelevant: boolean }> {
     const queryEmbedding = await this.embeddingService.embedQuery(question);
     this.logger.logQueryingContext(question);
-    const response = await this.pineconeService.queryDocuments('syrius-index', {
-      topK: 15,
+    const response = await this.vectorStorageService.query({
       vector: queryEmbedding,
+      topK: 15,
       includeMetadata: true,
     });
 
