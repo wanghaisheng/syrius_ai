@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
-import { ILLMService } from './llm.service.requirements';
+import { Inject, Injectable } from '@nestjs/common';
+import { ILLMService } from './interfaces/llm.service.requirements';
 import { BaseChatModel } from '@langchain/core/language_models/chat_models';
+import { ISystemPromptGenerator } from './interfaces/system-prompt-generator.service.requirements';
 
 type LLMResponse = { text: string } | string | Array<{ text: string } | string>;
 
 @Injectable()
 export class GeneralLLMService implements ILLMService {
   constructor(
-    private readonly llm: BaseChatModel
-  ) // private readonly systemPromptGenerator: ISystemPromptGenerator // This is a future requirement
-  {}
+    private readonly llm: BaseChatModel,
+    @Inject('ISystemPromptGenerator')
+    private readonly promptGenerator: ISystemPromptGenerator
+  ) {}
 
   public async askQuestion(
     question: string,
@@ -20,23 +22,9 @@ export class GeneralLLMService implements ILLMService {
       return 'Unfortunately, no relevant context was found to answer your question.';
     }
 
-    const prompt = this.createPrompt(context, question);
+    const prompt = this.promptGenerator.generatePrompt(context, question);
     const response = await this.invokeLLM(prompt);
     return this.extractResponseText(response);
-  }
-
-  private createPrompt(context: string[], question: string): string {
-    const formattedContext = context.join('\n');
-    return `
-      You are a highly knowledgeable assistant.
-      The following is the relevant context extracted from our knowledge base:
-      ${formattedContext}
-
-      Based on this context, answer the following question.
-      If the context is insufficient or unrelated, respond with: "The context provided does not contain enough information to answer this question."
-
-      Question: ${question}
-      Answer:`;
   }
 
   private async invokeLLM(prompt: string): Promise<LLMResponse> {
