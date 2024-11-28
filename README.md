@@ -1,6 +1,6 @@
 <div align="center" style="width: 100%;">
   <img
-    src="https://github.com/Romain-Portanguen/syrius_ai/blob/drafting-the-readmemd/apps/api/src/assets/Syrius%20AI.png"
+    src="apps/api/src/assets/Syrius AI.png"
     alt="project-logo"
     style="max-width: 100%; height: auto;"
   />
