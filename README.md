@@ -10,7 +10,7 @@
   <em>Enhancing AI Interactions with Seamless File Processing and Intelligent Retrieval.</em>
 </p>
 <p align="center">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=plastic&logo=opensourceinitiative&logoColor=white" alt="license">
+  <img src="https://img.shields.io/badge/License-MIT-0184a4?style=plastic&logo=opensourceinitiative&logoColor=white" alt="MIT License">
   <img src="https://img.shields.io/github/last-commit/Romain-Portanguen/syrius_ai?style=plastic&logo=git&logoColor=white&color=0184a4" alt="last-commit">
   <img src="https://img.shields.io/github/languages/top/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-top-language">
   <img src="https://img.shields.io/github/languages/count/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-language-count">
