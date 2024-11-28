@@ -1,82 +1,183 @@
-# Apps
+<p align="center">
+  <img src="https://github.com/Romain-Portanguen/syrius_ai/blob/drafting-the-readmemd/apps/api/src/assets/Syrius%20AI.png" width="100" alt="project-logo">
+</p>
+<p align="center">
+    <h1 align="center">SYRIUS_AI</h1>
+</p>
+<p align="center">
+    <em>Enhancing AI Interactions with Seamless File Processing and Intelligent Retrieval.</em>
+</p>
+<p align="center">
+	<img src="https://img.shields.io/github/license/Romain-Portanguen/syrius_ai?style=plastic&logo=opensourceinitiative&logoColor=white&color=0184a4" alt="license">
+	<img src="https://img.shields.io/github/last-commit/Romain-Portanguen/syrius_ai?style=plastic&logo=git&logoColor=white&color=0184a4" alt="last-commit">
+	<img src="https://img.shields.io/github/languages/top/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-top-language">
+	<img src="https://img.shields.io/github/languages/count/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-language-count">
+<p>
+<p align="center">
+		<em>Developed with the software and tools below.</em>
+</p>
+<p align="center">
+	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=plastic&logo=JavaScript&logoColor=black" alt="JavaScript">
+	<img src="https://img.shields.io/badge/Prettier-F7B93E.svg?style=plastic&logo=Prettier&logoColor=black" alt="Prettier">
+	<img src="https://img.shields.io/badge/Jest-C21325.svg?style=plastic&logo=Jest&logoColor=white" alt="Jest">
+	<img src="https://img.shields.io/badge/Axios-5A29E4.svg?style=plastic&logo=Axios&logoColor=white" alt="Axios">
+	<img src="https://img.shields.io/badge/ESLint-4B32C3.svg?style=plastic&logo=ESLint&logoColor=white" alt="ESLint">
+	<br>
+	<img src="https://img.shields.io/badge/Lodash-3492FF.svg?style=plastic&logo=Lodash&logoColor=white" alt="Lodash">
+	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=plastic&logo=TypeScript&logoColor=white" alt="TypeScript">
+	<img src="https://img.shields.io/badge/tsnode-3178C6.svg?style=plastic&logo=ts-node&logoColor=white" alt="tsnode">
+	<img src="https://img.shields.io/badge/Nx-143055.svg?style=plastic&logo=Nx&logoColor=white" alt="Nx">
+	<img src="https://img.shields.io/badge/JSON-000000.svg?style=plastic&logo=JSON&logoColor=white" alt="JSON">
+</p>
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+<br><!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary><br>
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is almost ready ✨.
+- [📍 Overview](#-overview)
+- [🧩 Features](#-features)
+- [🗂️ Repository Structure](#️-repository-structure)
+- [� Getting Started](#-getting-started)
+  - [⚙️ Installation](#️-installation)
+  - [🤖 Usage](#-usage)
+  - [🧪 Tests](#-tests)
+- [🤝 Contributing](#-contributing)
+- [🎗 License](#-license)
+</details>
+<hr>
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
-
-## Finish your remote caching setup
-
-[Click here to finish setting up your workspace!](https://cloud.nx.app/connect/9QkbjQQWar)
+## 📍 Overview
 
 
-## Run tasks
+The syrius_ai project is designed to enable files to be uploaded and to perform RAG (Retrieval-Augmented Generation) on these files in response to a question posed by the user. By integrating advanced AI models such as OpenAI, Anthropic and Mistral, the platform guarantees relevant and transparent contextual interactions. It supports file processing, text integration and vector storage, drawing on robust solutions such as AWS and Pinecone. Thanks to its modular architecture, syrius_ai offers reliable and scalable functionality for document processing, prompt generation and interaction with third-party services, while ensuring secure and efficient integration.
 
-To run the dev server for your app, use:
+---
+
+## 🧩 Features
+
+|     | Feature          | Description                                                                                                                               |
+|-----|------------------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| ⚙️  | **Architecture** | The project uses a modular architecture with Nx for managing build, serve, and test configurations, enhancing efficiency and scalability. |
+| 🔩  | **Code Quality** | The codebase adheres to modern JavaScript standards with TypeScript, using Prettier and ESLint for consistent style and quality.          |
+| 🔌  | **Integrations** | Integrates with NestJS, Langchain, and AWS SDK, among others, to provide a robust backend and AI capabilities.                            |
+| 🧩  | **Modularity**   | Highly modular, leveraging Nx to manage multiple packages and configurations, facilitating reusability and maintainability.               |
+| 🧪  | **Testing**      | Utilizes Jest with Nx Jest preset for testing, ensuring efficient and consistent testing practices across the project.                    |
+| ⚡️  | **Performance**  | Performance is optimized through efficient use of TypeScript and modular architecture, though specific benchmarks are not detailed.       |
+| 🛡️ | **Security**     | Uses NestJS which provides built-in security features like guards and interceptors.                                                       |
+| 📦  | **Dependencies** | Key dependencies include NestJS, Langchain, AWS SDK, and various Nx plugins, supporting a wide range of functionalities.                  |
+| 🚀  | **Scalability**  | Designed for scalability with Nx and NestJS, allowing for efficient handling of increased load and traffic.                               |
+
+---
+
+## 🗂️ Repository Structure
 
 ```sh
-npx nx serve api
+└── syrius_ai/
+    ├── README.md
+    ├── apps
+    │   └── api
+    ├── eslint.config.js
+    ├── jest.config.ts
+    ├── jest.preset.js
+    ├── nx.json
+    ├── package-lock.json
+    ├── package.json
+    └── tsconfig.base.json
 ```
 
-To create a production bundle:
+---
 
-```sh
-npx nx build api
-```
+## 🚀 Getting Started
 
-To see all available targets to run for a project, run:
+**System Requirements:**
 
-```sh
-npx nx show project api
-```
+* **TypeScript**: `version ~5.5.2`
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+### ⚙️ Installation
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+<h4>From <code>source</code></h4>
 
-## Add new projects
+> 1. Clone the syrius_ai repository:
+>
+> ```console
+> $ git clone https://github.com/Romain-Portanguen/syrius_ai
+> ```
+>
+> 2. Change to the project directory:
+> ```console
+> $ cd syrius_ai
+> ```
+>
+> 3. Install the dependencies:
+> ```console
+> $ npm install
+> ```
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+### 🤖 Usage
 
-Use the plugin's generator to create new projects.
+<h4>From <code>source</code></h4>
 
-To generate a new application, use:
+> Run syrius_ai using the command below:
+> ```console
+> $ nx serve api
+> ```
 
-```sh
-npx nx g @nx/node:app demo
-```
+### 🧪 Tests
 
-To generate a new library, use:
+> Run the test suite using the command below:
+> ```console
+> $ nx test api
+> ```
 
-```sh
-npx nx g @nx/node:lib mylib
-```
+---
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## 🤝 Contributing
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Contributions are welcome! Here are several ways you can contribute:
 
+- **[Report Issues](https://github.com/Romain-Portanguen/syrius_ai/issues)**: Submit bugs found or log feature requests for the `syrius_ai` project.
+- **[Submit Pull Requests](https://github.com/Romain-Portanguen/syrius_ai/blob/main/CONTRIBUTING.md)**: Review open PRs, and submit your own PRs.
+- **[Join the Discussions](https://github.com/Romain-Portanguen/syrius_ai/discussions)**: Share your insights, provide feedback, or ask questions.
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+<details closed>
+<summary>Contributing Guidelines</summary>
 
-## Install Nx Console
+1. **Fork the Repository**: Start by forking the project repository to your github account.
+2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
+   ```sh
+   git clone https://github.com/Romain-Portanguen/syrius_ai
+   ```
+3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
+   ```sh
+   git checkout -b new-feature-x
+   ```
+4. **Make Your Changes**: Develop and test your changes locally.
+5. **Commit Your Changes**: Commit with a clear message describing your updates.
+   ```sh
+   git commit -m 'Implemented new feature x.'
+   ```
+6. **Push to github**: Push the changes to your forked repository.
+   ```sh
+   git push origin new-feature-x
+   ```
+7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
+8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
+</details>
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+<details closed>
+<summary>Contributor Graph</summary>
+<br>
+<p align="center">
+   <a href="https://github.com{/Romain-Portanguen/syrius_ai/}graphs/contributors">
+      <img src="https://contrib.rocks/image?repo=Romain-Portanguen/syrius_ai">
+   </a>
+</p>
+</details>
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
 
-## Useful links
+## 🎗 License
 
-Learn more:
+This project is protected under the [MIT](https://choosealicense.com/licenses) License. For more details, refer to the [LICENSE](https://choosealicense.com/licenses/) file.
 
-- [Learn more about this workspace setup](https://nx.dev/nx-api/node?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+---
