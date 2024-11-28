@@ -1,33 +1,35 @@
+<div align="center" style="width: 100%;">
+  <img
+    src="https://github.com/Romain-Portanguen/syrius_ai/blob/drafting-the-readmemd/apps/api/src/assets/Syrius%20AI.png"
+    alt="project-logo"
+    style="max-width: 100%; height: auto;"
+  />
+</div>
+<h1 align="center">SYRIUS_AI</h1>
 <p align="center">
-  <img src="https://github.com/Romain-Portanguen/syrius_ai/blob/drafting-the-readmemd/apps/api/src/assets/Syrius%20AI.png" width="100" alt="project-logo">
+  <em>Enhancing AI Interactions with Seamless File Processing and Intelligent Retrieval.</em>
 </p>
 <p align="center">
-    <h1 align="center">SYRIUS_AI</h1>
+  <img src="https://img.shields.io/github/license/Romain-Portanguen/syrius_ai?style=plastic&logo=opensourceinitiative&logoColor=white&color=0184a4" alt="license">
+  <img src="https://img.shields.io/github/last-commit/Romain-Portanguen/syrius_ai?style=plastic&logo=git&logoColor=white&color=0184a4" alt="last-commit">
+  <img src="https://img.shields.io/github/languages/top/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-top-language">
+  <img src="https://img.shields.io/github/languages/count/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-language-count">
 </p>
 <p align="center">
-    <em>Enhancing AI Interactions with Seamless File Processing and Intelligent Retrieval.</em>
+  <em>Developed with the software and tools below.</em>
 </p>
 <p align="center">
-	<img src="https://img.shields.io/github/license/Romain-Portanguen/syrius_ai?style=plastic&logo=opensourceinitiative&logoColor=white&color=0184a4" alt="license">
-	<img src="https://img.shields.io/github/last-commit/Romain-Portanguen/syrius_ai?style=plastic&logo=git&logoColor=white&color=0184a4" alt="last-commit">
-	<img src="https://img.shields.io/github/languages/top/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-top-language">
-	<img src="https://img.shields.io/github/languages/count/Romain-Portanguen/syrius_ai?style=plastic&color=0184a4" alt="repo-language-count">
-<p>
-<p align="center">
-		<em>Developed with the software and tools below.</em>
-</p>
-<p align="center">
-	<img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=plastic&logo=JavaScript&logoColor=black" alt="JavaScript">
-	<img src="https://img.shields.io/badge/Prettier-F7B93E.svg?style=plastic&logo=Prettier&logoColor=black" alt="Prettier">
-	<img src="https://img.shields.io/badge/Jest-C21325.svg?style=plastic&logo=Jest&logoColor=white" alt="Jest">
-	<img src="https://img.shields.io/badge/Axios-5A29E4.svg?style=plastic&logo=Axios&logoColor=white" alt="Axios">
-	<img src="https://img.shields.io/badge/ESLint-4B32C3.svg?style=plastic&logo=ESLint&logoColor=white" alt="ESLint">
-	<br>
-	<img src="https://img.shields.io/badge/Lodash-3492FF.svg?style=plastic&logo=Lodash&logoColor=white" alt="Lodash">
-	<img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=plastic&logo=TypeScript&logoColor=white" alt="TypeScript">
-	<img src="https://img.shields.io/badge/tsnode-3178C6.svg?style=plastic&logo=ts-node&logoColor=white" alt="tsnode">
-	<img src="https://img.shields.io/badge/Nx-143055.svg?style=plastic&logo=Nx&logoColor=white" alt="Nx">
-	<img src="https://img.shields.io/badge/JSON-000000.svg?style=plastic&logo=JSON&logoColor=white" alt="JSON">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E.svg?style=plastic&logo=JavaScript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Prettier-F7B93E.svg?style=plastic&logo=Prettier&logoColor=black" alt="Prettier">
+  <img src="https://img.shields.io/badge/Jest-C21325.svg?style=plastic&logo=Jest&logoColor=white" alt="Jest">
+  <img src="https://img.shields.io/badge/Axios-5A29E4.svg?style=plastic&logo=Axios&logoColor=white" alt="Axios">
+  <img src="https://img.shields.io/badge/ESLint-4B32C3.svg?style=plastic&logo=ESLint&logoColor=white" alt="ESLint">
+  <br>
+  <img src="https://img.shields.io/badge/Lodash-3492FF.svg?style=plastic&logo=Lodash&logoColor=white" alt="Lodash">
+  <img src="https://img.shields.io/badge/TypeScript-3178C6.svg?style=plastic&logo=TypeScript&logoColor=white" alt="TypeScript">
+  <img src="https://img.shields.io/badge/tsnode-3178C6.svg?style=plastic&logo=ts-node&logoColor=white" alt="tsnode">
+  <img src="https://img.shields.io/badge/Nx-143055.svg?style=plastic&logo=Nx&logoColor=white" alt="Nx">
+  <img src="https://img.shields.io/badge/JSON-000000.svg?style=plastic&logo=JSON&logoColor=white" alt="JSON">
 </p>
 
 <br><!-- TABLE OF CONTENTS -->
@@ -37,17 +39,17 @@
 - [📍 Overview](#-overview)
 - [🧩 Features](#-features)
 - [🗂️ Repository Structure](#️-repository-structure)
-- [� Getting Started](#-getting-started)
+- [🚀 Getting Started](#-getting-started)
   - [⚙️ Installation](#️-installation)
   - [🤖 Usage](#-usage)
   - [🧪 Tests](#-tests)
 - [🤝 Contributing](#-contributing)
 - [🎗 License](#-license)
+
 </details>
 <hr>
 
 ## 📍 Overview
-
 
 The syrius_ai project is designed to enable files to be uploaded and to perform RAG (Retrieval-Augmented Generation) on these files in response to a question posed by the user. By integrating advanced AI models such as OpenAI, Anthropic and Mistral, the platform guarantees relevant and transparent contextual interactions. It supports file processing, text integration and vector storage, drawing on robust solutions such as AWS and Pinecone. Thanks to its modular architecture, syrius_ai offers reliable and scalable functionality for document processing, prompt generation and interaction with third-party services, while ensuring secure and efficient integration.
 
@@ -91,7 +93,7 @@ The syrius_ai project is designed to enable files to be uploaded and to perform 
 
 **System Requirements:**
 
-* **TypeScript**: `version ~5.5.2`
+- **TypeScript**: `version ~5.5.2`
 
 ### ⚙️ Installation
 
@@ -100,17 +102,19 @@ The syrius_ai project is designed to enable files to be uploaded and to perform 
 > 1. Clone the syrius_ai repository:
 >
 > ```console
-> $ git clone https://github.com/Romain-Portanguen/syrius_ai
+> git clone https://github.com/Romain-Portanguen/syrius_ai
 > ```
 >
 > 2. Change to the project directory:
+>
 > ```console
-> $ cd syrius_ai
+> cd syrius_ai
 > ```
 >
 > 3. Install the dependencies:
+>
 > ```console
-> $ npm install
+> npm install
 > ```
 
 ### 🤖 Usage
@@ -118,15 +122,17 @@ The syrius_ai project is designed to enable files to be uploaded and to perform 
 <h4>From <code>source</code></h4>
 
 > Run syrius_ai using the command below:
+>
 > ```console
-> $ nx serve api
+> nx serve api
 > ```
 
 ### 🧪 Tests
 
 > Run the test suite using the command below:
+>
 > ```console
-> $ nx test api
+> nx test api
 > ```
 
 ---
@@ -144,24 +150,33 @@ Contributions are welcome! Here are several ways you can contribute:
 
 1. **Fork the Repository**: Start by forking the project repository to your github account.
 2. **Clone Locally**: Clone the forked repository to your local machine using a git client.
+
    ```sh
    git clone https://github.com/Romain-Portanguen/syrius_ai
    ```
+
 3. **Create a New Branch**: Always work on a new branch, giving it a descriptive name.
+
    ```sh
    git checkout -b new-feature-x
    ```
+
 4. **Make Your Changes**: Develop and test your changes locally.
 5. **Commit Your Changes**: Commit with a clear message describing your updates.
+
    ```sh
    git commit -m 'Implemented new feature x.'
    ```
+
 6. **Push to github**: Push the changes to your forked repository.
+
    ```sh
    git push origin new-feature-x
    ```
+
 7. **Submit a Pull Request**: Create a PR against the original project repository. Clearly describe the changes and their motivations.
 8. **Review**: Once your PR is reviewed and approved, it will be merged into the main branch. Congratulations on your contribution!
+
 </details>
 
 <details closed>
